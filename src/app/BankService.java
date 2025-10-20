@@ -24,12 +24,18 @@ public class BankService {
         bankAccounts.add(bankAccount);
         return true;
     }
-    public boolean isAccountNameEmpty(String accountName){
-        return accountName == null || accountName.isEmpty();
+
+    public boolean isCurrentAccountCreated(String accountName, String accountNumber, double balance){
+        if((accountName == null || accountName.isEmpty()) && (accountNumber == null || accountNumber.isEmpty()) && balance < 0){
+            return false;
+        }
+        BankAccount bankAccount = new CurrentAccount(accountName, accountNumber, balance);
+        bankAccounts.add(bankAccount);
+        return true;
     }
 
-    public boolean isAccountNumberEmpty(String accountNumber){
-        return accountNumber == null || accountNumber.isEmpty();
+    public boolean isAccountNameOrAccountNumberEmpty(String accountName){
+        return accountName == null || accountName.isEmpty();
     }
 
     public boolean isInitialBalanceNegativeOrEmpty(double initialBalance){

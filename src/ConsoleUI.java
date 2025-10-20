@@ -1,6 +1,6 @@
 import app.BankAccount;
 import app.BankService;
-import app.SavingsAccount;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -31,10 +31,10 @@ public class ConsoleUI {
 
             switch (userOption){
                 case "1":
-                    savingsAccount();
+                    createSavingsAccount();
                     break;
                 case "2":
-                    System.out.println("Create Current Account");
+                    createCurrentAccount();
                     break;
                 case "3":
                     printAccountsList();
@@ -59,7 +59,7 @@ public class ConsoleUI {
         }
     }
 
-    public void savingsAccount(){
+    public void createSavingsAccount(){
         String userName;
         String accountNumber;
         double balance = 0;
@@ -68,21 +68,21 @@ public class ConsoleUI {
             System.out.print("Enter Account Name: ");
             userName = scanner.nextLine().trim();
 
-            if(bankService.isAccountNameEmpty(userName))
+            if(bankService.isAccountNameOrAccountNumberEmpty(userName))
                 System.out.println("Invalid account name");
             else
                 System.out.println("Account Name: " + userName);
-        }while(bankService.isAccountNameEmpty(userName));
+        }while(bankService.isAccountNameOrAccountNumberEmpty(userName));
 
         do{
             System.out.print("Enter Account Number: ");
             accountNumber = scanner.nextLine().trim();
 
-            if(bankService.isAccountNumberEmpty(accountNumber))
+            if(bankService.isAccountNameOrAccountNumberEmpty(accountNumber))
                 System.out.println("Invalid account number");
             else
                 System.out.println("Account Number: " + accountNumber);
-        }while(bankService.isAccountNumberEmpty(accountNumber));
+        }while(bankService.isAccountNameOrAccountNumberEmpty(accountNumber));
 
         do{
             System.out.print("Enter initial deposit amount (Input 0 if you have no deposit to make right now): ");
@@ -109,12 +109,64 @@ public class ConsoleUI {
         }
     }
 
+    public void createCurrentAccount(){
+        String userName;
+        String accountNumber;
+        double balance = 0;
+
+        do{
+            System.out.print("Enter Account Name: ");
+            userName = scanner.nextLine().trim();
+
+            if(bankService.isAccountNameOrAccountNumberEmpty(userName))
+                System.out.println("Invalid account name");
+            else
+                System.out.println("Account Name: " + userName);
+        }while(bankService.isAccountNameOrAccountNumberEmpty(userName));
+
+        do{
+            System.out.print("Enter Account Number: ");
+            accountNumber = scanner.nextLine().trim();
+
+            if(bankService.isAccountNameOrAccountNumberEmpty(accountNumber))
+                System.out.println("Invalid account number");
+            else
+                System.out.println("Account Number: " + accountNumber);
+        }while(bankService.isAccountNameOrAccountNumberEmpty(accountNumber));
+
+        do{
+            System.out.print("Enter initial deposit amount (Input 0 if you have no deposit to make right now): ");
+            if(scanner.hasNextDouble()){
+                balance = scanner.nextDouble();
+                scanner.nextLine();
+            }
+            else{
+                System.out.println("Invalid deposit amount");
+                scanner.nextLine();
+                continue;
+            }
+            if(bankService.isInitialBalanceNegativeOrEmpty(balance))
+                System.out.println("Invalid balance");
+            else
+                System.out.println("Deposit amount: " + balance);
+        }while(bankService.isInitialBalanceNegativeOrEmpty(balance));
+
+        if(bankService.isCurrentAccountCreated(userName, accountNumber, balance)){
+            System.out.println("Current Account Created Successfully");
+        }
+        else{
+            System.out.println("There seems to be an error in our system. Please try again later.");
+        }
+    }
+
+
     public void printAccountsList(){
         if(bankService.isBankAccountEmpty()){
             System.out.println("There are no accounts in the system");
         }
         else{
             ArrayList<BankAccount> bankAccounts = bankService.getBankAccounts();
+            System.out.printf("We have %d account(s) in the system\n", bankAccounts.size());
             for(BankAccount bankAccount : bankAccounts){
                 System.out.println("\n--------------------");
                 System.out.println("Account Name: "+ bankAccount.getAccountName());
