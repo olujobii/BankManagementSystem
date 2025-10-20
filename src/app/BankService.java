@@ -8,10 +8,6 @@ public class BankService {
         this.bankAccounts = bankAccounts;
     }
 
-    public void addBankAccount(BankAccount bankAccount){
-        bankAccounts.add(bankAccount);
-    }
-
     public ArrayList<BankAccount> getBankAccounts(){
         return bankAccounts;
     }
