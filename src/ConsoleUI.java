@@ -59,7 +59,7 @@ public class ConsoleUI {
         }
     }
 
-    public void createSavingsAccount(){
+    private void createSavingsAccount(){
         String userName;
         String accountNumber;
         double balance = 0;
@@ -109,7 +109,7 @@ public class ConsoleUI {
         }
     }
 
-    public void createCurrentAccount(){
+    private void createCurrentAccount(){
         String userName;
         String accountNumber;
         double balance = 0;
@@ -160,7 +160,7 @@ public class ConsoleUI {
     }
 
 
-    public void printAccountsList(){
+    private void printAccountsList(){
         if(bankService.isBankAccountEmpty()){
             System.out.println("There are no accounts in the system");
         }
@@ -176,5 +176,11 @@ public class ConsoleUI {
                 System.out.println("--------------------");
             }
         }
+    }
+
+
+    public void exitApplication(){
+        System.out.println("Thank you for using our Bank application, we hope to see you soon.");
+        scanner.close();
     }
 }
