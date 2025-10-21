@@ -63,7 +63,8 @@ public class ConsoleUI {
         String userName;
         String accountNumber;
         double balance = 0;
-
+        BankAccount uniqueBankAccount;
+        boolean isAccountUnique = false;
         do{
             System.out.print("Enter Account Name: ");
             userName = scanner.nextLine().trim();
@@ -75,14 +76,25 @@ public class ConsoleUI {
         }while(bankService.isAccountNameOrAccountNumberEmpty(userName));
 
         do{
-            System.out.print("Enter Account Number: ");
+            System.out.print("Enter unique Account Number: ");
             accountNumber = scanner.nextLine().trim();
 
-            if(bankService.isAccountNameOrAccountNumberEmpty(accountNumber))
+            if(bankService.isAccountNameOrAccountNumberEmpty(accountNumber)) {
                 System.out.println("Invalid account number");
-            else
+                continue;
+            }
+
+            //Checking if Bank account is unique
+            uniqueBankAccount = bankService.isAccountAvailable(accountNumber);
+
+            if(uniqueBankAccount != null) {
+                System.out.println("Account number exists");
+            }
+            else {
                 System.out.println("Account Number: " + accountNumber);
-        }while(bankService.isAccountNameOrAccountNumberEmpty(accountNumber));
+                isAccountUnique = true;
+            }
+        }while(!isAccountUnique);
 
         do{
             System.out.print("Enter initial deposit amount (Input 0 if you have no deposit to make right now): ");
@@ -113,7 +125,8 @@ public class ConsoleUI {
         String userName;
         String accountNumber;
         double balance = 0;
-
+        BankAccount userBankAccount;
+        boolean isAccountUnique = false;
         do{
             System.out.print("Enter Account Name: ");
             userName = scanner.nextLine().trim();
@@ -125,14 +138,25 @@ public class ConsoleUI {
         }while(bankService.isAccountNameOrAccountNumberEmpty(userName));
 
         do{
-            System.out.print("Enter Account Number: ");
+            System.out.print("Enter unique Account Number: ");
             accountNumber = scanner.nextLine().trim();
 
-            if(bankService.isAccountNameOrAccountNumberEmpty(accountNumber))
+            if(bankService.isAccountNameOrAccountNumberEmpty(accountNumber)) {
                 System.out.println("Invalid account number");
-            else
-                System.out.println("Account Number: " + accountNumber);
-        }while(bankService.isAccountNameOrAccountNumberEmpty(accountNumber));
+                continue;
+            }
+
+            //Checking if Bank Account is unique
+            userBankAccount = bankService.isAccountAvailable(accountNumber);
+
+            if(userBankAccount != null){
+                System.out.println("Bank Account exists");
+            }
+            else{
+                System.out.println("Account Number: "+accountNumber);
+                isAccountUnique = true;
+            }
+        }while(!isAccountUnique);
 
         do{
             System.out.print("Enter initial deposit amount (Input 0 if you have no deposit to make right now): ");
