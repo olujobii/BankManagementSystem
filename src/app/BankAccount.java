@@ -15,7 +15,7 @@ public abstract class BankAccount {
         this.balance += amount;
     }
 
-    public abstract void withdraw(double amount);
+    public abstract boolean withdraw(double amount);
 
     public double getBalance() {
         return balance;
@@ -28,4 +28,6 @@ public abstract class BankAccount {
     public String getAccountNumber() {
         return AccountNumber;
     }
+
+
 }

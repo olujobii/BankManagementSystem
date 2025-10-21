@@ -38,7 +38,16 @@ public class BankService {
         return accountName == null || accountName.isEmpty();
     }
 
-    public boolean isInitialBalanceNegativeOrEmpty(double initialBalance){
+    public boolean isDepositNegativeOrEmpty(double initialBalance){
         return initialBalance < 0;
+    }
+
+    public BankAccount isAccountAvailable(String userAccountNumber){
+        for(BankAccount bankAccount : bankAccounts){
+            if(bankAccount.getAccountNumber().equals(userAccountNumber)){
+                return bankAccount;
+            }
+        }
+        return null;
     }
 }

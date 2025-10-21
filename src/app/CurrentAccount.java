@@ -7,11 +7,11 @@ public class CurrentAccount extends BankAccount {
     }
 
     @Override
-    public void withdraw(double amount) {
+    public boolean withdraw(double amount) {
         if(balance - amount < -500){
-            System.out.println("Cannot make withdrawal");
-            return;
+            return false;
         }
         balance -= amount;
+        return true;
     }
 }

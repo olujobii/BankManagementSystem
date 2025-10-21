@@ -7,12 +7,12 @@ public class SavingsAccount extends BankAccount {
     }
 
     @Override
-    public void withdraw(double amount){
+    public boolean withdraw(double amount){
         if(balance - amount < 100){
-            System.out.println("Cannot make withdrawal");
-            return;
+            return false;
         }
 
         balance -= amount;
+        return true;
     }
 }

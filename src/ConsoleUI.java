@@ -40,13 +40,13 @@ public class ConsoleUI {
                     printAccountsList();
                     break;
                 case "4":
-                    System.out.println("Deposit Money");
+                    depositMoney();
                     break;
                 case "5":
-                    System.out.println("Withdraw Money");
+                    withdrawMoney();
                     break;
                 case "6":
-                    System.out.println("Check Balance");
+                    checkBalance();
                     break;
                 case "7":
                     System.out.println("Exit");
@@ -95,11 +95,11 @@ public class ConsoleUI {
                 scanner.nextLine();
                 continue;
             }
-            if(bankService.isInitialBalanceNegativeOrEmpty(balance))
+            if(bankService.isDepositNegativeOrEmpty(balance))
                 System.out.println("Invalid balance");
             else
                 System.out.println("Deposit amount: " + balance);
-        }while(bankService.isInitialBalanceNegativeOrEmpty(balance));
+        }while(bankService.isDepositNegativeOrEmpty(balance));
 
         if(bankService.isSavingsAccountCreated(userName, accountNumber, balance)){
             System.out.println("Savings Account Created Successfully");
@@ -145,11 +145,11 @@ public class ConsoleUI {
                 scanner.nextLine();
                 continue;
             }
-            if(bankService.isInitialBalanceNegativeOrEmpty(balance))
+            if(bankService.isDepositNegativeOrEmpty(balance))
                 System.out.println("Invalid balance");
             else
                 System.out.println("Deposit amount: " + balance);
-        }while(bankService.isInitialBalanceNegativeOrEmpty(balance));
+        }while(bankService.isDepositNegativeOrEmpty(balance));
 
         if(bankService.isCurrentAccountCreated(userName, accountNumber, balance)){
             System.out.println("Current Account Created Successfully");
@@ -158,7 +158,6 @@ public class ConsoleUI {
             System.out.println("There seems to be an error in our system. Please try again later.");
         }
     }
-
 
     private void printAccountsList(){
         if(bankService.isBankAccountEmpty()){
@@ -178,6 +177,109 @@ public class ConsoleUI {
         }
     }
 
+    private void depositMoney(){
+        if(bankService.isBankAccountEmpty()){
+            System.out.println("There are no accounts in the system");
+            return;
+        }
+        String userAccountNumber;
+        double depositAmount = 0;
+        BankAccount userBankAccount;
+
+        System.out.print("Enter Account Number: ");
+        userAccountNumber = scanner.nextLine();
+
+        //Checks if bank account exists
+        userBankAccount = bankService.isAccountAvailable(userAccountNumber);
+
+        if(userBankAccount == null){
+            System.out.println("Bank Account does not exist in the system");
+            return;
+        }
+
+        do{
+            System.out.print("Enter deposit amount: ");
+            if(!scanner.hasNextDouble()){
+                System.out.println("Invalid input");
+                scanner.nextLine();
+                continue;
+            }
+            depositAmount = scanner.nextDouble();
+            scanner.nextLine();
+
+            if(depositAmount <= 0)
+                System.out.println("deposit amount cannot be less than or equal to 0");
+        }while(depositAmount <= 0);
+
+        userBankAccount.deposit(depositAmount);
+        System.out.println("Deposit successful");
+        System.out.println("New balance: "+userBankAccount.getBalance());
+    }
+
+    private void withdrawMoney(){
+        if(bankService.isBankAccountEmpty()){
+            System.out.println("There are no accounts in the system");
+            return;
+        }
+
+        String userAccountNumber;
+        BankAccount userBankAccount;
+        double withdrawAmount = 0;
+        System.out.print("Enter Account Number: ");
+        userAccountNumber = scanner.nextLine();
+
+        //Checks if bank account exists
+       userBankAccount = bankService.isAccountAvailable(userAccountNumber);
+
+        if(userBankAccount == null){
+            System.out.println("Bank Account does not exist in the system");
+            return;
+        }
+
+        do{
+            System.out.print("Enter withdraw amount: ");
+            if(!scanner.hasNextDouble()){
+                System.out.println("Invalid input");
+                scanner.nextLine();
+                continue;
+            }
+            withdrawAmount = scanner.nextDouble();
+            scanner.nextLine();
+
+            if(withdrawAmount <= 0)
+                System.out.println("Withdrawal amount cannot be less than or equal to 0");
+        }while(withdrawAmount <= 0);
+
+        if(userBankAccount.withdraw(withdrawAmount)){
+            System.out.println("Withdrawal of "+withdrawAmount+" is successful.");
+            System.out.println("New balance: "+userBankAccount.getBalance());
+        }else{
+            System.out.println("Withdrawal cannot be processed");
+        }
+    }
+
+    private void checkBalance(){
+        if(bankService.isBankAccountEmpty()){
+            System.out.println("There are no accounts in the system");
+            return;
+        }
+        String userAccountNumber;
+        BankAccount userBankAccount;
+        System.out.print("Enter Bank Account: ");
+        userAccountNumber = scanner.nextLine();
+
+        //Check if bank account exists
+        userBankAccount = bankService.isAccountAvailable(userAccountNumber);
+
+        if(userBankAccount == null) {
+            System.out.println("Bank Account is not available in the system");
+            return;
+        }
+
+        System.out.println("Account Name: "+userBankAccount.getAccountName());
+        System.out.println("Account Number: "+userBankAccount.getAccountNumber());
+        System.out.println("Balance: "+userBankAccount.getBalance());
+    }
 
     public void exitApplication(){
         System.out.println("Thank you for using our Bank application, we hope to see you soon.");
