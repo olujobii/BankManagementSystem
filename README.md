@@ -18,7 +18,7 @@ Users can:
 
 2. Clone the repo in your IDE terminal or Command Prompt
 ```bash
-https://github.com/olujobii/BankManagementSystem
+git clone https://github.com/olujobii/BankManagementSystem
 ```
 
 3. Locate directory and move into src folder
