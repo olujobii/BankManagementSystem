@@ -27,11 +27,11 @@ cd src
 ```
 
 4. Compile Main.java file
-```java
+```bash
 javac Main.java
 ```
 
 5. Run Main.class file
-```java
+```bash
 java Main
 ```
